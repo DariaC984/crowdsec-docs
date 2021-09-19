@@ -65,7 +65,7 @@ If `filter` returns `false` or a non-boolean, node won't be processed.
 
 Here is the [expr documentation](https://github.com/antonmedv/expr/tree/master/docs).
 
-Examples :
+Examples:
 
  - `filter: "evt.Enriched.foo == 'test'"`
  - `filter: "evt.Enriched.bar == 'test' && evt.Enriched.foo == 'test2'`
@@ -107,7 +107,7 @@ whitelist:
     - "127.0.0.1"
 ```
 
-A valid [expr](/expr/helpers.md) expression that return a string to apply the pattern on.
+A valid [expr](/expr/helpers.md) expression that returns a string to apply the pattern on.
 
 
 #### `cidr`
@@ -120,7 +120,7 @@ whitelist:
     - "172.16.0.0/12"
 ```
 
-A valid [expr](/expr/helpers.md) expression that return a string to apply the pattern on.
+A valid [expr](/expr/helpers.md) expression that returns a string to apply the pattern on.
 
 
 #### `expression`
@@ -134,7 +134,7 @@ whitelist:
     - evt.Enriched.IsoCode == 'FR'
 ```
 
-A valid [expr](/expr/helpers.md) expression that return a string to apply the pattern on.
+A valid [expr](/expr/helpers.md) expression that returns a string to apply the pattern on.
 
 
 ### `data`

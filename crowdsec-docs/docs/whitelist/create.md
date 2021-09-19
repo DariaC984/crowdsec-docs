@@ -6,19 +6,19 @@ sidebar_position: 4
 
 # Whitelists in parsing
 
-When a whitelist is present in parsing `/etc/crowdsec/parsers/...`, it will be checked/discarded before being poured to any bucket. These whitelists intentionally generate no logs and are useful to discard noisy false positive sources.
+When a whitelist is present in parsing `/etc/crowdsec/parsers/...`, it will be checked/discarded before being poured into any bucket. These whitelists intentionally generate no logs and are useful to discard noisy false-positive sources.
 
 ## Whitelist by ip
 
 Let's assume we have a setup with a `crowdsecurity/nginx` collection enabled and no whitelists.
 
-Thus, if I "attack" myself :
+Thus, if I "attack" myself:
 
 ```bash
 nikto -host myfqdn.com
 ```
 
-my own IP will be flagged as being an attacker :
+my own IP will be flagged as being an attacker:
 
 ```bash
 $ tail -f /var/log/crowdsec.log 
@@ -40,7 +40,7 @@ sudo cscli ban list
 
 ### Create the whitelist by IP
 
-Let's create a `/etc/crowdsec/parsers/s02-enrich/mywhitelists.yaml` file with the following content :
+Let's create a `/etc/crowdsec/parsers/s02-enrich/mywhitelists.yaml` file with the following content:
 
 ```yaml
 name: crowdsecurity/whitelists
@@ -57,13 +57,13 @@ sudo systemctl reload crowdsec
 
 ### Test the whitelist
 
-Thus, if we restart our attack :
+Thus, if we restart our attack:
 
 ```bash
 nikto -host myfqdn.com
 ```
 
-And we don't get bans :
+And we don't get bans:
 
 ```bash
 $ tail -f /var/log/crowdsec.log  
@@ -80,9 +80,9 @@ Here, we don't get *any* logs, as the event have been discarded at parsing time.
 
 ## Create whitelist by expression
 
-Now, let's make something more tricky : let's whitelist a **specific** user-agent (of course, it's just an example, don't do this at home !). The [hub's taxonomy](https://hub.crowdsec.net/fields) will helps us to find which data is present in which field.
+Now, let's make something more tricky: let's whitelist a **specific** user-agent (of course, it's just an example, don't do this at home!). The [hub's taxonomy](https://hub.crowdsec.net/fields) will help us to find which data is present in which field.
 
-Let's change our whitelist to :
+Let's change our whitelist to:
 
 ```yaml
 name: crowdsecurity/whitelists
@@ -93,9 +93,9 @@ whitelist:
    - evt.Parsed.http_user_agent == 'MySecretUserAgent'
 ```
 
-again, let's restart CrowdSec !
+again, let's restart CrowdSec!
 
-For the record, I edited nikto's configuration to use 'MySecretUserAgent' as user-agent, and thus :
+For the record, I edited nikto's configuration to use 'MySecretUserAgent' as user-agent, and thus:
 
 ```bash
 nikto -host myfqdn.com
@@ -116,10 +116,10 @@ It has the advantage of being triggered only once we are about to take decision 
 
 A good example is the [crowdsecurity/whitelist-good-actors](https://hub.crowdsec.net/author/crowdsecurity/collections/whitelist-good-actors) collection.
 
-But let's craft ours based on our previous example !
-First of all, install the [crowdsecurity/rdns postoverflow](https://hub.crowdsec.net/author/crowdsecurity/configurations/rdns) : it will be in charge of enriching overflows with reverse dns information of the offending IP.
+But let's craft ours based on our previous example!
+First of all, install the [crowdsecurity/rdns postoverflow](https://hub.crowdsec.net/author/crowdsecurity/configurations/rdns): it will be in charge of enriching overflows with reverse dns information of the offending IP.
 
-Let's put the following file in `/etc/crowdsec/postoverflows/s01-whitelists/mywhitelists.yaml` :
+Let's put the following file in `/etc/crowdsec/postoverflows/s01-whitelists/mywhitelists.yaml`:
 
 ```yaml
 name: me/my_cool_whitelist
@@ -131,7 +131,7 @@ whitelist:
     - evt.Enriched.reverse_dns endsWith '.asnieres.rev.numericable.fr.'
 ```
 
-After reloading CrowdSec, and launching (again!) nikto :
+After reloading CrowdSec, and launching (again!) nikto:
 
 ```bash
 nikto -host myfqdn.com
